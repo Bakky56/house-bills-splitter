@@ -1,3 +1,8 @@
+I{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 :root {
   --primary-color: #001637;
   --secondary-color: #44474E;
