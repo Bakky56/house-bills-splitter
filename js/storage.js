@@ -1,16 +1,16 @@
-const STORAGE_KEY = "houseBillsData";
+const myStorage = "houseBillsData";
 
 export function saveData(data) {
   if (!data || typeof data !== "object" || Array.isArray(data)) {
     throw new Error("Invalid application data.");
   }
 
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  localStorage.setItem(myStorage, JSON.stringify(data));
 }
 
 
 export function getData() {
-  const savedData = localStorage.getItem(STORAGE_KEY);
+  const savedData = localStorage.getItem(myStorage);
 
   if (savedData === null) {
     return null;
@@ -20,12 +20,12 @@ export function getData() {
     return JSON.parse(savedData);
   } catch {
     throw new Error(
-      "Saved data is invalid JSON. Reset the application data before continuing."
+     "error saved data is invalid"
     );
   }
 }
 
 
 export function clearData() {
-  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(myStorage);
 }

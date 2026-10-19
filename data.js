@@ -1,39 +1,32 @@
-
 import { getData, saveData } from "./js/storage.js";
 
 export async function initializeData() {
+try {
 
-  const existingData = getData();
+const existingData = getData();
 
-  if (existingData !== null) {
-    return existingData;
-  }
-
- 
-  const response = await fetch("./data.json");
-
-  if (!response.ok) {
-    throw new Error("Could not load the initial demo data.");
-  }
-
-  const initialData = await response.json();
+if (existingData !== null) {
+  return existingData;
+}
 
 
-  const requiredCollections = [
-    "houses",
-    "members",
-    "expenses",
-    "settlements",
-    "activities"
-  ];
+const initialData = {
+  houses: [],
+  members: [],
+  expenses: [],
+  settlements: [],
+  activities: []
+};
 
-  for (const collection of requiredCollections) {
-    if (!Array.isArray(initialData[collection])) {
-      throw new Error(`Invalid demo data: ${collection} must be an array.`);
-    }
-  }
 
-  saveData(initialData);
+saveData(initialData);
 
-  return initialData;
+
+return initialData;
+
+
+} catch (error) {
+console.error("Initialization failed:", error);
+throw error;
+}
 }
