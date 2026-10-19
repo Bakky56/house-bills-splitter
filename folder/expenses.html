@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>House Bills Splitter | Add Expense</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="expenses.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-B/GM4XqrwHnWXNOWMbloTmrYXZg10cakYGmpfsR/bbzQ6JAJI4ihuyADKLnBgrCe"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <main class="expenses-page">
+    <div class="expense-topbar">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="#">Flat Marble, Ijebu-ode</a>
+        <span>›</span>
+        <a href="#">Expenses</a>
+        <span>›</span>
+        <span class="current-page">Add Expense</span>
+      </nav>
+      <div class="currency-status">
+        <span class="status-dot"></span>
+        <span>Base Currency: NGN (₦)</span>
+        <span class="status-divider"></span>
+        <span class="ledger-status">Active Ledger</span>
+      </div>
+    </div>
+
+    <header class="expense-page-header">
+      <div>
+        <h1>Add an Expense</h1>
+        <p>Record a shared bill and split it fairly among housemates.</p>
+      </div>
+    </header>
+
+    <form id="expenseForm">
+      <div class="expense-layout">
+        <div class="expense-main-column">
+          <section class="expense-card expense-details-card">
+            <div class="card-heading">
+              <h2><span class="heading-icon">▤</span> Expense Details</h2>
+              <span class="step-badge">Step 1 of 2</span>
+            </div>
+
+            <div class="form-field">
+              <label for="expenseTitle">Expense Title <span>Required</span></label>
+              <input class="form-control expense-input" type="text" id="expenseTitle" name="title" placeholder="e.g. October PHCN Unit Recharge" required>
+            </div>
+
+            <div class="amount-currency-grid">
+              <div class="form-field">
+                <label for="expenseAmount">Amount</label>
+                <div class="amount-input-wrap">
+                  <span>₦</span>
+                  <input class="form-control expense-input" type="number" id="expenseAmount" name="amount" min="0.01" step="0.01" placeholder="18,500.00" required>
+                </div>
+              </div>
+              <div class="form-field">
+                <label for="expenseCurrency">Currency</label>
+                <select class="form-select expense-input" id="expenseCurrency" name="currency">
+                  <option value="NGN">NGN - Nigerian Naira (₦)</option>
+                  <option value="USD">USD - US Dollar ($)</option>
+                  <option value="GBP">GBP - British Pound (£)</option>
+                  <option value="EUR">EUR - Euro (€)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Category</label>
+              <div class="category-grid">
+                <button class="category-option" type="button" data-category="Rent">
+                  <span class="category-icon">⌂</span><span>Rent</span>
+                </button>
+                <button class="category-option active" type="button" data-category="Electricity">
+                  <span class="category-icon">ϟ</span><span>Electricity</span>
+                </button>
+                <button class="category-option" type="button" data-category="Fuel">
+                  <span class="category-icon">⛽</span><span>Fuel / Gen</span>
+                </button>
+                <button class="category-option" type="button" data-category="Food">
+                  <span class="category-icon">♧</span><span>Food</span>
+                </button>
+                <button class="category-option" type="button" data-category="Internet">
+                  <span class="category-icon">⌁</span><span>Internet</span>
+                </button>
+                <button class="category-option" type="button" data-category="Other">
+                  <span class="category-icon">•••</span><span>Other</span>
+                </button>
+              </div>
+              <input type="hidden" id="expenseCategory" name="category" value="Electricity">
+            </div>
+
+            <div class="date-payer-grid">
+              <div class="form-field">
+                <label for="expenseDate">Date</label>
+                <input class="form-control expense-input" type="date" id="expenseDate" name="date" required>
+              </div>
+              <div class="form-field">
+                <label for="expensePayer">Paid By</label>
+                <select class="form-select expense-input" id="expensePayer" name="paidBy" required>
+                  <option value="">Select a member</option>
+                  <option value="member_001">Wahab</option>
+                  <option value="member_002">Chidi</option>
+                  <option value="member_003">Tunde</option>
+                  <option value="member-4">Chidi Nwosu</option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <section class="expense-card split-card">
+            <div class="card-heading">
+              <h2><span class="heading-icon">◉</span> Split Configuration</h2>
+              <span class="reconciled-badge" id="reconciliationStatus">Reconciled 100%</span>
+            </div>
+
+            <div class="split-tabs" role="group" aria-label="Split type">
+              <button class="split-tab active" type="button" data-split="equal">Equal Split</button>
+              <button class="split-tab" type="button" data-split="exact">Exact Amounts</button>
+              <button class="split-tab" type="button" data-split="percentage">Percentage (%)</button>
+            </div>
+            <input type="hidden" id="splitType" name="splitType" value="equal">
+
+            <div class="members-heading">
+              <span id="selectedMembersCount">5 HOUSEMATES INCLUDED</span>
+              <button type="button" id="selectNoneBtn">Select None</button>
+            </div>
+
+            <div class="member-list" id="memberList">
+              <label class="member-row">
+                <input class="member-checkbox" type="checkbox" value="member-1" checked>
+                <span class="member-avatar avatar-photo">F</span>
+                <span class="member-info"><strong>Wahab</strong><small>Payer • Room 1</small></span>
+                <span class="member-share"><strong data-share="member-1">₦4,625.00</strong><small data-share-label="member-1">25% share</small></span>
+              </label>
+              <label class="member-row">
+                <input class="member-checkbox" type="checkbox" value="member-2" checked>
+                <span class="member-avatar avatar-blue">D</span>
+                <span class="member-info"><strong>Daniel</strong><small>Room 2</small></span>
+                <span class="member-share"><strong data-share="member-2">₦4,625.00</strong><small data-share-label="member-2">25% share</small></span>
+              </label>
+              <label class="member-row">
+                <input class="member-checkbox" type="checkbox" value="member-3" checked>
+                <span class="member-avatar avatar-green">S</span>
+                <span class="member-info"><strong>Samuel</strong><small>Room 3</small></span>
+                <span class="member-share"><strong data-share="member-3">₦4,625.00</strong><small data-share-label="member-3">25% share</small></span>
+              </label>
+              <label class="member-row">
+                <input class="member-checkbox" type="checkbox" value="member-4" checked>
+                <span class="member-avatar avatar-lavender">G</span>
+                <span class="member-info"><strong>Grace</strong><small>Room 4</small></span>
+                <span class="member-share"><strong data-share="member-4">₦4,625.00</strong><small data-share-label="member-4">25% share</small></span>
+              </label>
+            </div>
+
+            <div class="reconciliation-note">
+              <strong>⚙ Exact Reconciliation Guarantee</strong>
+              <p>Shares will be reconciled to the exact expense total, including any remaining kobo.</p>
+            </div>
+          </section>
+
+          <section class="expense-card recurring-card">
+            <div class="recurring-content">
+              <span class="recurring-icon">◷</span>
+              <div>
+                <h3>Repeat this expense monthly</h3>
+                <p>Automate recurring utility or rent splits.</p>
+                <small>↳ A recurring reminder can be created each month.</small>
+              </div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="recurringExpense" name="recurring">
+              <span class="toggle-slider"></span>
+            </label>
+          </section>
+        </div>
+
+        <aside class="expense-side-column">
+          <section class="expense-card fx-card">
+            <div class="fx-label"><span>⇄</span> EXCHANGERATE-API <span class="fx-live-dot"></span></div>
+            <h2>FX Settlement Engine</h2>
+            <div class="fx-message" id="fxStatus">NGN is the house currency. Foreign currency conversion will be shown here.</div>
+            <div class="fx-conversion">
+              <div>
+                <small>FOREIGN CURRENCY EQUIVALENT</small>
+                <strong id="foreignAmount">$0.00</strong>
+                <span id="foreignCurrencyLabel">NGN</span>
+              </div>
+              <span class="conversion-arrow">→</span>
+              <div class="house-amount">
+                <small>House Base (NGN)</small>
+                <strong id="convertedAmount">₦0.00</strong>
+              </div>
+              <div class="rate-row">
+                <span>Pegged Market Rate:</span>
+                <strong id="exchangeRate">Rate pending</strong>
+              </div>
+            </div>
+            <p class="fx-info">☁ Exchange rates may be cached locally for offline use.</p>
+            <p class="fx-info">⌁ Conversion status will update when the API is connected.</p>
+            <a class="api-attribution" href="https://www.exchangerate-api.com/docs/free" target="_blank" rel="noopener noreferrer">Exchange rates provided by ExchangeRate-API ↗</a>
+          </section>
+
+          <section class="expense-card preview-card">
+            <div class="preview-heading">
+              <h2>Split Preview</h2>
+              <span>Flat 3B</span>
+            </div>
+            <div class="house-preview">
+              <div class="house-thumbnail">⌂</div>
+              <div>
+                <strong>Flat 3B, Yaba</strong>
+                <p id="previewMemberCount">4 members active</p>
+                <small id="yourShare">Your share: ₦4,625.00</small>
+              </div>
+            </div>
+            <div class="split-visual">
+              <div class="donut-chart" id="splitDonut"><span id="donutCount">4</span></div>
+              <ul class="split-legend">
+                <li><span class="legend-dot dot-one"></span>Wahab</li>
+                <li><span class="legend-dot dot-two"></span>Daniel</li>
+                <li><span class="legend-dot dot-three"></span>Samuel</li>
+                <li><span class="legend-dot dot-four"></span>Grace</li>
+              </ul>
+            </div>
+          </section>
+        </aside>
+      </div>
+
+      <div class="expense-actions">
+        <p></p>
+        <div>
+          <button class="btn-cancel" type="reset">Cancel</button>
+          <button class="btn-save" type="submit">✓ Save Expense</button>
+        </div>
+      </div>
+      <p id="formMessage" class="form-message" role="status"></p>
+    </form>
+  </main>
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-1a/pXj49ZQ1aHEmrJ+gMw1otqoVsYwlEnlD8mIfY2TV03r20Y0CN7uqx1tQogjPL"
+      crossorigin="anonymous"
+    ></script>
+    <script src="js/expenses.js"></script>
+  </body>
+</html>
