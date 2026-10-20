@@ -238,6 +238,11 @@
   font-size: 17px;
   font-weight: 700;
 }
+#conversionRate{
+  margin-bottom: 50px;
+  margin-left: 10px;
+  padding-top: 0;
+}
 
 .category-grid {
   display: grid;

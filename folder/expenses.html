@@ -12,9 +12,91 @@
       integrity="sha384-B/GM4XqrwHnWXNOWMbloTmrYXZg10cakYGmpfsR/bbzQ6JAJI4ihuyADKLnBgrCe"
       crossorigin="anonymous"
     />
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css"
+      rel="stylesheet"
+    />
+    
   </head>
   <body>
-    <main class="expenses-page">
+
+    <aside class="sidebar">
+        <a href="./index.html" class="brand">
+          <i class="fa-solid fa-house-user"></i>
+          <span>House Bills Splitter</span>
+        </a>
+
+        <p class="sidebar-label">MENU</p>
+
+        <nav class="sidebar-nav" aria-label="Main navigation">
+          <a href="./index.html" class="nav-link ">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Dashboard</span>
+          </a>
+
+          <a href="./house-member.html" class="nav-link">
+            <i class="fa-solid fa-people-roof"></i>
+            <span>Houses & Members</span>
+          </a>
+
+          <a href="./expenses.html" class="nav-link active">
+            <i class="fa-solid fa-receipt"></i>
+            <span>Expenses</span>
+          </a>
+
+          <a href="./balances.html" class="nav-link">
+            <i class="fa-solid fa-scale-balanced"></i>
+            <span>Balances</span>
+          </a>
+
+          <a href="./settlements.html" class="nav-link">
+            <i class="fa-solid fa-money-bill-transfer"></i>
+            <span>Settlements</span>
+          </a>
+
+          <a href="./activity.html" class="nav-link">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>Activity History</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>Manage shared expenses with ease.</span>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <nav class="topbar" aria-label="Dashboard tools">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+
+            <input
+              type="search"
+              id="dashboardSearch"
+              placeholder="Search expenses, housemates..."
+              aria-label="Search expenses and housemates"
+            />
+          </div>
+
+          <div class="topbar-actions">
+            <button
+              type="button"
+              class="icon-button"
+              aria-label="Notifications"
+            >
+              <i class="fa-regular fa-bell"></i>
+            </button>
+
+            <a href="./expenses.html" class="expense-button">
+              <i class="fa-solid fa-plus"></i>
+              <span>Add Expense</span>
+            </a>
+          </div>
+        </nav>
+
+     <main class="expenses-page">
     <div class="expense-topbar">
       <nav class="breadcrumbs" aria-label="Breadcrumb">
         <a href="#">Flat Marble, Ijebu-ode</a>
@@ -69,6 +151,7 @@
                   <option value="EUR">EUR - Euro (€)</option>
                 </select>
               </div>
+              <small id="conversionRate" class="conversion-rate">Loading conversion rate...</small>
             </div>
 
             <div class="form-field">
@@ -106,9 +189,9 @@
                 <select class="form-select expense-input" id="expensePayer" name="paidBy" required>
                   <option value="">Select a member</option>
                   <option value="member_001">Wahab</option>
-                  <option value="member_002">Chidi</option>
-                  <option value="member_003">Tunde</option>
-                  <option value="member-4">Chidi Nwosu</option>
+                  <option value="member_002">Daniel</option>
+                  <option value="member_003">Samuel</option>
+                  <option value="member-004">Grace</option>
                 </select>
               </div>
             </div>
@@ -128,7 +211,7 @@
             <input type="hidden" id="splitType" name="splitType" value="equal">
 
             <div class="members-heading">
-              <span id="selectedMembersCount">5 HOUSEMATES INCLUDED</span>
+              <span id="selectedMembersCount">4 HOUSEMATES INCLUDED</span>
               <button type="button" id="selectNoneBtn">Select None</button>
             </div>
 
@@ -243,12 +326,15 @@
       <p id="formMessage" class="form-message" role="status"></p>
     </form>
   </main>
+
+
+      </main>
     <script
       type="module"
       src="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-1a/pXj49ZQ1aHEmrJ+gMw1otqoVsYwlEnlD8mIfY2TV03r20Y0CN7uqx1tQogjPL"
       crossorigin="anonymous"
     ></script>
-    <script src="js/expenses.js"></script>
+    <script src="../js/expenses.js"></script>
   </body>
 </html>
