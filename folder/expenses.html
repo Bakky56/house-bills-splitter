@@ -133,13 +133,19 @@
               <label for="expenseTitle">Expense Title <span>Required</span></label>
               <input class="form-control expense-input" type="text" id="expenseTitle" name="title" placeholder="e.g. October PHCN Unit Recharge" required>
             </div>
+            <div class="form-field">
+              <label for="select-house">Select House </label>
+              <select class="form-select house-input" id="select-house" name="house" required> 
+                  <option value="">Select House</option>               
+              </select>
+            </div>
 
             <div class="amount-currency-grid">
               <div class="form-field">
                 <label for="expenseAmount">Amount</label>
                 <div class="amount-input-wrap">
                   <span>₦</span>
-                  <input class="form-control expense-input" type="number" id="expenseAmount" name="amount" min="0.01" step="0.01" placeholder="18,500.00" required>
+                  <input class="form-control expense-input" type="number" id="expenseAmount" name="amount" min="0.01" step="0.01" placeholder="00.00" required>
                 </div>
               </div>
               <div class="form-field">
@@ -188,10 +194,6 @@
                 <label for="expensePayer">Paid By</label>
                 <select class="form-select expense-input" id="expensePayer" name="paidBy" required>
                   <option value="">Select a member</option>
-                  <option value="member_001">Wahab</option>
-                  <option value="member_002">Daniel</option>
-                  <option value="member_003">Samuel</option>
-                  <option value="member-004">Grace</option>
                 </select>
               </div>
             </div>
@@ -216,30 +218,6 @@
             </div>
 
             <div class="member-list" id="memberList">
-              <label class="member-row">
-                <input class="member-checkbox" type="checkbox" value="member-1" checked>
-                <span class="member-avatar avatar-photo">F</span>
-                <span class="member-info"><strong>Wahab</strong><small>Payer • Room 1</small></span>
-                <span class="member-share"><strong data-share="member-1">₦4,625.00</strong><small data-share-label="member-1">25% share</small></span>
-              </label>
-              <label class="member-row">
-                <input class="member-checkbox" type="checkbox" value="member-2" checked>
-                <span class="member-avatar avatar-blue">D</span>
-                <span class="member-info"><strong>Daniel</strong><small>Room 2</small></span>
-                <span class="member-share"><strong data-share="member-2">₦4,625.00</strong><small data-share-label="member-2">25% share</small></span>
-              </label>
-              <label class="member-row">
-                <input class="member-checkbox" type="checkbox" value="member-3" checked>
-                <span class="member-avatar avatar-green">S</span>
-                <span class="member-info"><strong>Samuel</strong><small>Room 3</small></span>
-                <span class="member-share"><strong data-share="member-3">₦4,625.00</strong><small data-share-label="member-3">25% share</small></span>
-              </label>
-              <label class="member-row">
-                <input class="member-checkbox" type="checkbox" value="member-4" checked>
-                <span class="member-avatar avatar-lavender">G</span>
-                <span class="member-info"><strong>Grace</strong><small>Room 4</small></span>
-                <span class="member-share"><strong data-share="member-4">₦4,625.00</strong><small data-share-label="member-4">25% share</small></span>
-              </label>
             </div>
 
             <div class="reconciliation-note">
@@ -335,6 +313,6 @@
       integrity="sha384-1a/pXj49ZQ1aHEmrJ+gMw1otqoVsYwlEnlD8mIfY2TV03r20Y0CN7uqx1tQogjPL"
       crossorigin="anonymous"
     ></script>
-    <script src="../js/expenses.js"></script>
+    <script type="module" src="../js/expenses.js"></script>
   </body>
 </html>
