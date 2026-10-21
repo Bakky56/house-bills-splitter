@@ -1,5 +1,5 @@
 
-import { calculateMemberBalances } from "./calculations.js";
+// import { calculateMemberBalances } from "./calculations.js";
 import { initializeData } from "../data.js";
 import { getData } from "../js/storage.js";
 
@@ -132,69 +132,69 @@ function renderSpendingChart(houseExpenses) {
   });
 }
 
-async function loadDashboard() {
-  try {
-    const data = await initializeData();
+// async function loadDashboard() {
+//   try {
+//     const data = await initializeData();
 
-    if (!data || !Array.isArray(data.houses)) {
-      throw new Error("Dashboard data is invalid.");
-    }
+//     if (!data || !Array.isArray(data.houses)) {
+//       throw new Error("Dashboard data is invalid.");
+//     }
 
-    if (data.houses.length === 0) {
-      totalSpendingCard.textContent = formatCurrency(0);
-      amountOwedCard.textContent = formatCurrency(0);
-      amountOwedToYouCard.textContent = formatCurrency(0);
-      netBalanceCard.textContent = formatCurrency(0);
+//     if (data.houses.length === 0) {
+//       totalSpendingCard.textContent = formatCurrency(0);
+//       amountOwedCard.textContent = formatCurrency(0);
+//       amountOwedToYouCard.textContent = formatCurrency(0);
+//       netBalanceCard.textContent = formatCurrency(0);
 
-      renderSpendingChart([]);
-      return;
-    }
+//       renderSpendingChart([]);
+//       return;
+//     }
 
-    // TODO: Replace null with the actual selected house ID.
-    const houseExpenses = data.expenses.filter(
-      (expense) => expense.houseId === currentHouseId
-    );
+//     // TODO: Replace null with the actual selected house ID.
+//     const houseExpenses = data.expenses.filter(
+//       (expense) => expense.houseId === currentHouseId
+//     );
 
-    const totalSpending = houseExpenses.reduce(
-      (total, expense) => total + expense.amount,
-      0
-    );
+//     const totalSpending = houseExpenses.reduce(
+//       (total, expense) => total + expense.amount,
+//       0
+//     );
 
-    totalSpendingCard.textContent = formatCurrency(totalSpending);
+//     totalSpendingCard.textContent = formatCurrency(totalSpending);
 
-    renderSpendingChart(houseExpenses);
+//     renderSpendingChart(houseExpenses);
 
-    const houseMembers = data.members.filter(
-      (member) => member.houseId === currentHouseId
-    );
+//     const houseMembers = data.members.filter(
+//       (member) => member.houseId === currentHouseId
+//     );
 
-    const balances = calculateMemberBalances(
-      houseExpenses,
-      houseMembers
-    );
+//     const balances = calculateMemberBalances(
+//       houseExpenses,
+//       houseMembers
+//     );
 
-    const currentUserId = data.currentUserId;
-    const currentUserBalance = balances[currentUserId] ?? 0;
+//     const currentUserId = data.currentUserId;
+//     const currentUserBalance = balances[currentUserId] ?? 0;
 
-    // A negative balance means the user owes money.
-    const amountOwed = Math.max(0, -currentUserBalance);
+//     // A negative balance means the user owes money.
+//     const amountOwed = Math.max(0, -currentUserBalance);
 
-    // A positive balance means money is owed to the user.
-    const amountOwedToYou = Math.max(0, currentUserBalance);
+//     // A positive balance means money is owed to the user.
+//     const amountOwedToYou = Math.max(0, currentUserBalance);
 
-    const netBalance = currentUserBalance;
+//     const netBalance = currentUserBalance;
 
-    amountOwedCard.textContent = formatCurrency(amountOwed);
-    amountOwedToYouCard.textContent = formatCurrency(amountOwedToYou);
-    netBalanceCard.textContent = formatCurrency(netBalance);
-  } catch (error) {
-    console.error("Dashboard loading failed:", error);
+//     amountOwedCard.textContent = formatCurrency(amountOwed);
+//     amountOwedToYouCard.textContent = formatCurrency(amountOwedToYou);
+//     netBalanceCard.textContent = formatCurrency(netBalance);
+//   } catch (error) {
+//     console.error("Dashboard loading failed:", error);
 
-    totalSpendingCard.textContent = "Unable to load";
-    amountOwedCard.textContent = "Unable to load";
-    amountOwedToYouCard.textContent = "Unable to load";
-    netBalanceCard.textContent = "Unable to load";
-  }
-}
+//     totalSpendingCard.textContent = "Unable to load";
+//     amountOwedCard.textContent = "Unable to load";
+//     amountOwedToYouCard.textContent = "Unable to load";
+//     netBalanceCard.textContent = "Unable to load";
+//   }
+// }
 
-loadDashboard();
+// loadDashboard();

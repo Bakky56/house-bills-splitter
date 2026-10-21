@@ -11,63 +11,16 @@
       rel="stylesheet"
     />
 
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css"
-      rel="stylesheet"
-    />
+   
 
     <link rel="stylesheet" href="./Styles.css" />
   </head>
 
   <body>
     <div class="app-layout">
-      <!-- Sidebar -->
-      <aside class="sidebar">
-        <a href="./index.html" class="brand">
-          <i class="fa-solid fa-house-user"></i>
-          <span>House Bills Splitter</span>
-        </a>
-
-        <p class="sidebar-label">MENU</p>
-
-        <nav class="sidebar-nav" aria-label="Main navigation">
-          <a href="./index.html" class="nav-link active">
-            <i class="fa-solid fa-chart-pie"></i>
-            <span>Dashboard</span>
-          </a>
-
-          <a href="./house-member.html" class="nav-link">
-            <i class="fa-solid fa-people-roof"></i>
-            <span>Houses & Members</span>
-          </a>
-
-          <a href="./expenses.html" class="nav-link">
-            <i class="fa-solid fa-receipt"></i>
-            <span>Expenses</span>
-          </a>
-
-          <a href="./balances.html" class="nav-link">
-            <i class="fa-solid fa-scale-balanced"></i>
-            <span>Balances</span>
-          </a>
-
-          <a href="./settlements.html" class="nav-link">
-            <i class="fa-solid fa-money-bill-transfer"></i>
-            <span>Settlements</span>
-          </a>
-
-          <a href="./activity.html" class="nav-link">
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            <span>Activity History</span>
-          </a>
-        </nav>
-
-        <div class="sidebar-footer">
-          <i class="fa-solid fa-circle-info"></i>
-          <span>Manage shared expenses with ease.</span>
-        </div>
-      </aside>
-
+     
+<div id="sidebar-container"></div>
+    <script type="module" src="../js/sidebar.js"></script>
       <main class="main-content">
         <nav class="topbar" aria-label="Dashboard tools">
           <div class="search-box">
