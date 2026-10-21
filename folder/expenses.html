@@ -1,220 +1,341 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Expense | House Bills Splitter</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="expenses.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-</head>
-<body>
-  <aside class="sidebar">
-    <a href="./index.html" class="brand">
-      <i class="fa-solid fa-house-user"></i>
-      <span>House Bills Splitter</span>
-    </a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Expense | House Bills Splitter</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="expenses.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a href="./index.html" class="brand">
+        <i class="fa-solid fa-house-user"></i>
+        <span>House Bills Splitter</span>
+      </a>
 
-    <p class="sidebar-label">MENU</p>
-    <nav class="sidebar-nav" aria-label="Main navigation">
-      <a href="./index.html" class="nav-link">
-        <i class="fa-solid fa-chart-pie"></i><span>Dashboard</span>
-      </a>
-      <a href="./house-member.html" class="nav-link">
-        <i class="fa-solid fa-people-roof"></i><span>Houses &amp; Members</span>
-      </a>
-      <a href="./expenses.html" class="nav-link active">
-        <i class="fa-solid fa-receipt"></i><span>Expenses</span>
-      </a>
-      <a href="./balances.html" class="nav-link">
-        <i class="fa-solid fa-scale-balanced"></i><span>Balances</span>
-      </a>
-      <a href="./settlements.html" class="nav-link">
-        <i class="fa-solid fa-money-bill-transfer"></i><span>Settlements</span>
-      </a>
-      <a href="./activity.html" class="nav-link">
-        <i class="fa-solid fa-clock-rotate-left"></i><span>Activity History</span>
-      </a>
-    </nav>
-
-    <div class="sidebar-footer">
-      <i class="fa-solid fa-circle-info"></i>
-      <span>Manage shared expenses with ease.</span>
-    </div>
-  </aside>
-
-  <main class="main-content">
-    <nav class="topbar" aria-label="Dashboard tools">
-      <div class="search-box">
-        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-        <input type="search" id="dashboardSearch" placeholder="Search expenses, housemates..." aria-label="Search expenses and housemates">
-      </div>
-      <div class="topbar-actions">
-        <button type="button" class="icon-button" aria-label="Notifications">
-          <i class="fa-regular fa-bell"></i>
-        </button>
-        <a href="./expenses.html" class="expense-button">
-          <i class="fa-solid fa-plus"></i><span>Add Expense</span>
+      <p class="sidebar-label">MENU</p>
+      <nav class="sidebar-nav" aria-label="Main navigation">
+        <a href="./index.html" class="nav-link">
+          <i class="fa-solid fa-chart-pie"></i><span>Dashboard</span>
         </a>
+        <a href="./house-member.html" class="nav-link">
+          <i class="fa-solid fa-people-roof"></i
+          ><span>Houses &amp; Members</span>
+        </a>
+        <a href="./expenses.html" class="nav-link active">
+          <i class="fa-solid fa-receipt"></i><span>Expenses</span>
+        </a>
+        <a href="./balances.html" class="nav-link">
+          <i class="fa-solid fa-scale-balanced"></i><span>Balances</span>
+        </a>
+        <a href="./settlements.html" class="nav-link">
+          <i class="fa-solid fa-money-bill-transfer"></i
+          ><span>Settlements</span>
+        </a>
+        <a href="./activity.html" class="nav-link">
+          <i class="fa-solid fa-clock-rotate-left"></i
+          ><span>Activity History</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <i class="fa-solid fa-circle-info"></i>
+        <span>Manage shared expenses with ease.</span>
       </div>
-    </nav>
+    </aside>
 
-    <section class="expenses-page">
-      <div class="expense-topbar">
-        <nav class="breadcrumbs" aria-label="Breadcrumb">
-          <a href="./house-member.html">Houses &amp; Members</a>
-          <span>›</span><span class="current-page">Add Expense</span>
-        </nav>
-        <div class="currency-status">
-          <span class="status-dot"></span><span>Currency: NGN (₦)</span>
-          <span class="status-divider"></span><span class="ledger-status">Shared expenses</span>
+    <main class="main-content">
+      <nav class="topbar" aria-label="Dashboard tools">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+          <input
+            type="search"
+            id="dashboardSearch"
+            placeholder="Search expenses, housemates..."
+            aria-label="Search expenses and housemates"
+          />
         </div>
-      </div>
-
-      <header class="expense-page-header">
-        <div>
-          <h1>Add an Expense</h1>
-          <p>Record a bill and share the cost with your housemates.</p>
+        <div class="topbar-actions">
+          <button type="button" class="icon-button" aria-label="Notifications">
+            <i class="fa-regular fa-bell"></i>
+          </button>
+          <a href="./expenses.html" class="expense-button">
+            <i class="fa-solid fa-plus"></i><span>Add Expense</span>
+          </a>
         </div>
-      </header>
+      </nav>
 
-      <form id="expenseForm">
-        <div class="expense-layout">
-          <div class="expense-main-column">
-            <section class="expense-card expense-details-card">
-              <div class="card-heading">
-                <h2><span class="heading-icon"><i class="fa-solid fa-receipt"></i></span> Expense Details</h2>
-                <span class="step-badge">Step 1 of 2</span>
-              </div>
+      <section class="expenses-page">
+        <div class="expense-topbar">
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <a href="./house-member.html">Houses &amp; Members</a>
+            <span>›</span><span class="current-page">Add Expense</span>
+          </nav>
+          <div class="currency-status">
+            <span class="status-dot"></span><span>Currency: NGN (₦)</span>
+            <span class="status-divider"></span
+            ><span class="ledger-status">Shared expenses</span>
+          </div>
+        </div>
 
-              <div class="form-field">
-                <label for="expenseHouse">House <span>Required</span></label>
-                <select class="form-select expense-input" id="expenseHouse" name="houseId" required>
-                  <option value="">Select a house</option>
-                </select>
-                <small class="field-help">Choose the house this expense belongs to.</small>
-              </div>
+        <header class="expense-page-header">
+          <div>
+            <h1>Add an Expense</h1>
+            <p>Record a bill and share the cost with your housemates.</p>
+          </div>
+        </header>
 
-              <div class="form-field">
-                <label for="expenseTitle">Expense title <span>Required</span></label>
-                <input class="form-control expense-input" type="text" id="expenseTitle" name="title" placeholder="e.g. October electricity bill" required>
-              </div>
+        <form id="expenseForm">
+          <div class="expense-layout">
+            <div class="expense-main-column">
+              <section class="expense-card expense-details-card">
+                <div class="card-heading">
+                  <h2>
+                    <span class="heading-icon"
+                      ><i class="fa-solid fa-receipt"></i
+                    ></span>
+                    Expense Details
+                  </h2>
+                  <span class="step-badge">Step 1 of 2</span>
+                </div>
 
-              <div class="amount-currency-grid">
                 <div class="form-field">
-                  <label for="expenseAmount">Amount (₦) <span>Required</span></label>
-                  <div class="amount-input-wrap">
-                    <span>₦</span>
-                    <input class="form-control expense-input" type="number" id="expenseAmount" name="amount" min="0.01" step="0.01" placeholder="18500" required>
+                  <label for="expenseHouse">House <span>Required</span></label>
+                  <select
+                    class="form-select expense-input"
+                    id="expenseHouse"
+                    name="houseId"
+                    required
+                  >
+                    <option value="">Select a house</option>
+                  </select>
+                  <small class="field-help"
+                    >Choose the house this expense belongs to.</small
+                  >
+                </div>
+
+                <div class="form-field">
+                  <label for="expenseTitle"
+                    >Expense title <span>Required</span></label
+                  >
+                  <input
+                    class="form-control expense-input"
+                    type="text"
+                    id="expenseTitle"
+                    name="title"
+                    placeholder="e.g. October electricity bill"
+                    required
+                  />
+                </div>
+
+                <div class="amount-currency-grid">
+                  <div class="form-field">
+                    <label for="expenseAmount"
+                      >Amount (₦) <span>Required</span></label
+                    >
+                    <div class="amount-input-wrap">
+                      <span>₦</span>
+                      <input
+                        class="form-control expense-input"
+                        type="number"
+                        id="expenseAmount"
+                        name="amount"
+                        min="0.01"
+                        step="0.01"
+                        placeholder="18500"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-field">
+                    <label for="expenseCategory"
+                      >Category <span>Required</span></label
+                    >
+                    <select
+                      class="form-select expense-input"
+                      id="expenseCategory"
+                      name="category"
+                      required
+                    >
+                      <option value="">Select category</option>
+                      <option value="Rent">Rent</option>
+                      <option value="Electricity">Electricity</option>
+                      <option value="Fuel">Fuel / Generator</option>
+                      <option value="Food">Food / Groceries</option>
+                      <option value="Internet">Internet</option>
+                      <option value="Other">Other</option>
+                    </select>
                   </div>
                 </div>
-                <div class="form-field">
-                  <label for="expenseCategory">Category <span>Required</span></label>
-                  <select class="form-select expense-input" id="expenseCategory" name="category" required>
-                    <option value="">Select category</option>
-                    <option value="Rent">Rent</option>
-                    <option value="Electricity">Electricity</option>
-                    <option value="Fuel">Fuel / Generator</option>
-                    <option value="Food">Food / Groceries</option>
-                    <option value="Internet">Internet</option>
-                    <option value="Other">Other</option>
-                  </select>
+
+                <div class="date-payer-grid">
+                  <div class="form-field">
+                    <label for="expenseDate">Date <span>Required</span></label>
+                    <input
+                      class="form-control expense-input"
+                      type="date"
+                      id="expenseDate"
+                      name="date"
+                      required
+                    />
+                  </div>
+                  <div class="form-field">
+                    <label for="expensePayer"
+                      >Paid by <span>Required</span></label
+                    >
+                    <select
+                      class="form-select expense-input"
+                      id="expensePayer"
+                      name="paidBy"
+                      required
+                      disabled
+                    >
+                      <option value="">Select a house first</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
+              </section>
 
-              <div class="date-payer-grid">
-                <div class="form-field">
-                  <label for="expenseDate">Date <span>Required</span></label>
-                  <input class="form-control expense-input" type="date" id="expenseDate" name="date" required>
+              <section class="expense-card split-card">
+                <div class="card-heading">
+                  <h2>
+                    <span class="heading-icon"
+                      ><i class="fa-solid fa-people-group"></i
+                    ></span>
+                    Split Configuration
+                  </h2>
+                  <span class="reconciled-badge" id="reconciliationStatus"
+                    >Ready to split</span
+                  >
                 </div>
-                <div class="form-field">
-                  <label for="expensePayer">Paid by <span>Required</span></label>
-                  <select class="form-select expense-input" id="expensePayer" name="paidBy" required disabled>
-                    <option value="">Select a house first</option>
-                  </select>
+                <p class="section-description">
+                  Choose who shares this bill and how much each person
+                  contributes.
+                </p>
+
+                <div class="split-tabs" role="group" aria-label="Split type">
+                  <button
+                    class="split-tab active"
+                    type="button"
+                    data-split="equal"
+                  >
+                    Equal split
+                  </button>
+                  <button class="split-tab" type="button" data-split="exact">
+                    Exact amounts
+                  </button>
+                  <button
+                    class="split-tab"
+                    type="button"
+                    data-split="percentage"
+                  >
+                    Percentage
+                  </button>
                 </div>
-              </div>
-            </section>
+                <input
+                  type="hidden"
+                  id="splitType"
+                  name="splitType"
+                  value="equal"
+                />
 
-            <section class="expense-card split-card">
-              <div class="card-heading">
-                <h2><span class="heading-icon"><i class="fa-solid fa-people-group"></i></span> Split Configuration</h2>
-                <span class="reconciled-badge" id="reconciliationStatus">Ready to split</span>
-              </div>
-              <p class="section-description">Choose who shares this bill and how much each person contributes.</p>
-
-              <div class="split-tabs" role="group" aria-label="Split type">
-                <button class="split-tab active" type="button" data-split="equal">Equal split</button>
-                <button class="split-tab" type="button" data-split="exact">Exact amounts</button>
-                <button class="split-tab" type="button" data-split="percentage">Percentage</button>
-              </div>
-              <input type="hidden" id="splitType" name="splitType" value="equal">
-
-              <div class="members-heading">
-                <span id="selectedMembersCount">0 MEMBERS SELECTED</span>
-                <button type="button" id="selectNoneBtn">Select none</button>
-              </div>
-
-              <div class="member-list" id="memberList">
-                <div class="empty-members">
-                  <i class="fa-solid fa-users"></i>
-                  <p>Select a house to display its members here.</p>
+                <div class="members-heading">
+                  <span id="selectedMembersCount">0 MEMBERS SELECTED</span>
+                  <button type="button" id="selectNoneBtn">Select none</button>
                 </div>
-              </div>
 
-              <p class="reconciliation-note" id="splitHelp">
-                <i class="fa-solid fa-circle-info"></i>
-                Select a house and members to calculate each person's share.
-              </p>
-            </section>
-          </div>
+                <div class="member-list" id="memberList">
+                  <div class="empty-members">
+                    <i class="fa-solid fa-users"></i>
+                    <p>Select a house to display its members here.</p>
+                  </div>
+                </div>
 
-          <aside class="expense-side-column">
-            <section class="expense-card preview-card">
-              <div class="preview-heading">
-                <h2>Split Preview</h2>
-                <span id="previewHouseLabel">No house selected</span>
-              </div>
+                <p class="reconciliation-note" id="splitHelp">
+                  <i class="fa-solid fa-circle-info"></i>
+                  Select a house and members to calculate each person's share.
+                </p>
+              </section>
+            </div>
 
-              <div class="house-preview">
-                <div class="house-thumbnail"><i class="fa-solid fa-house"></i></div>
+            <aside class="expense-side-column">
+              <section class="expense-card preview-card">
+                <div class="preview-heading">
+                  <h2>Split Preview</h2>
+                  <span id="previewHouseLabel">No house selected</span>
+                </div>
+
+                <div class="house-preview">
+                  <div class="house-thumbnail">
+                    <i class="fa-solid fa-house"></i>
+                  </div>
+                  <div>
+                    <strong id="previewHouseName">Choose a house</strong>
+                    <p id="previewMemberCount">0 members selected</p>
+                    <small id="previewTotal">Total expense: ₦0.00</small>
+                  </div>
+                </div>
+
+                <div class="preview-summary">
+                  <div class="summary-row">
+                    <span>Total amount</span
+                    ><strong id="summaryTotal">₦0.00</strong>
+                  </div>
+                  <div class="summary-row">
+                    <span>Members sharing</span
+                    ><strong id="summaryMembers">0</strong>
+                  </div>
+                  <div class="summary-row">
+                    <span>Share per person</span
+                    ><strong id="summaryShare">₦0.00</strong>
+                  </div>
+                </div>
+
+                <p class="preview-note">
+                  The split preview updates as you change the amount, members,
+                  or split type.
+                </p>
+              </section>
+
+              <section class="expense-card tip-card">
+                <div class="tip-icon">
+                  <i class="fa-solid fa-lightbulb"></i>
+                </div>
                 <div>
-                  <strong id="previewHouseName">Choose a house</strong>
-                  <p id="previewMemberCount">0 members selected</p>
-                  <small id="previewTotal">Total expense: ₦0.00</small>
+                  <h3>Before you save</h3>
+                  <p>
+                    Check the house, payer, amount, and selected members. Exact
+                    amounts must add up to the full expense, while percentages
+                    must add up to 100%.
+                  </p>
                 </div>
-              </div>
-
-              <div class="preview-summary">
-                <div class="summary-row"><span>Total amount</span><strong id="summaryTotal">₦0.00</strong></div>
-                <div class="summary-row"><span>Members sharing</span><strong id="summaryMembers">0</strong></div>
-                <div class="summary-row"><span>Share per person</span><strong id="summaryShare">₦0.00</strong></div>
-              </div>
-
-              <p class="preview-note">The split preview updates as you change the amount, members, or split type.</p>
-            </section>
-
-            <section class="expense-card tip-card">
-              <div class="tip-icon"><i class="fa-solid fa-lightbulb"></i></div>
-              <div>
-                <h3>Before you save</h3>
-                <p>Check the house, payer, amount, and selected members. Exact amounts must add up to the full expense, while percentages must add up to 100%.</p>
-              </div>
-            </section>
-          </aside>
-        </div>
-
-        <div class="expense-actions">
-          <p id="formMessage" class="form-message" role="status" aria-live="polite"></p>
-          <div>
-            <button class="btn-cancel" type="reset">Clear form</button>
-            <button class="btn-save" type="submit"><i class="fa-solid fa-check"></i> Save expense</button>
+              </section>
+            </aside>
           </div>
-        </div>
-      </form>
-    </section>
-  </main>
 
-  <script type="module" src="./js/expenses.js"></script>
-</body>
+          <div class="expense-actions">
+            <p
+              id="formMessage"
+              class="form-message"
+              role="status"
+              aria-live="polite"
+            ></p>
+            <div>
+              <button class="btn-cancel" type="reset">Clear form</button>
+              <button class="btn-save" type="submit">
+                <i class="fa-solid fa-check"></i> Save expense
+              </button>
+            </div>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <script type="module" src="./js/expenses.js"></script>
+  </body>
 </html>

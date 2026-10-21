@@ -8,40 +8,70 @@ const houseNameInput = document.getElementById('houseName');
 const houseAddressInput = document.getElementById('houseAddress');
 const deleteHouseButton = document.getElementById('deleteHouseButton');
 const housesList = document.getElementById('housesList');
-const formMessage = document.getElementById('formMessage');
 const houseCountElement = document.getElementById('houseCount');
 
 // MEMBER ELEMENTS
 const addMemberForm = document.getElementById('addMemberForm');
 const memberHouseInput = document.getElementById('memberHouse');
 const memberNameInput = document.getElementById('memberName');
-const memberMessage = document.getElementById('memberMessage');
 const membersList = document.getElementById('membersList');
 
-// Store the ID of the selected house
+// TOAST ELEMENTS
+const messageToast = document.getElementById('messageToast');
+const toastTitle = document.getElementById('toastTitle');
+const toastMessage = document.getElementById('toastMessage');
+
+// EDIT MEMBER MODAL ELEMENTS
+const editMemberModalElement = document.getElementById('editMemberModal');
+const editMemberForm = document.getElementById('editMemberForm');
+const editMemberNameInput = document.getElementById('editMemberName');
+const editMemberMessage = document.getElementById('editMemberMessage');
+
+// CREATE THE BOOTSTRAP TOAST AND MODAL
+const editMemberModal = new bootstrap.Modal(editMemberModalElement);
+
+// STORE THE IDs
 let selectedHouseId = null;
+let editingMemberId = null;
+let deletingHouseId = null;
+let deletingMemberId = null;
 
 
-// SHOW A MESSAGE
-function showMessage(element, message, type) {
-  element.textContent = message;
-  element.className = 'form-message mb-3 ' + type;
+// SHOW TOAST MESSAGE
+function showMessage(message, type = 'success') {
+  toastMessage.textContent = message;
+
+  if (type === 'success') {
+    toastTitle.textContent = 'Success';
+
+    messageToast.classList.remove('toast-error');
+    messageToast.classList.add('toast-success');
+  } else {
+    toastTitle.textContent = 'Notice';
+
+    messageToast.classList.remove('toast-success');
+    messageToast.classList.add('toast-error');
+  }
+
+  const toast = bootstrap.Toast.getOrCreateInstance(messageToast);
+
+  toast.show();
 }
 
 
 // DISPLAY ALL HOUSES
 function displayHouses() {
   const data = getData();
-  const houses = data.houses;
+  const houses = data.houses || [];
 
   // Update the house count
   houseCountElement.textContent =
     houses.length + (houses.length === 1 ? ' house' : ' houses');
 
-  // Clear the current house list
+  // Clear the current list
   housesList.innerHTML = '';
 
-  // Check if there are no houses
+  // Check whether there are houses
   if (houses.length === 0) {
     housesList.innerHTML = `
       <div class="col-12">
@@ -58,10 +88,11 @@ function displayHouses() {
     deleteHouseButton.disabled = true;
 
     displayMembers();
+
     return;
   }
 
-  // Check that the selected house still exists
+  // Check whether the selected house still exists
   const selectedHouse = houses.find(function (house) {
     return house.id === selectedHouseId;
   });
@@ -73,9 +104,11 @@ function displayHouses() {
   // Display each house
   houses.forEach(function (house) {
     const houseCard = document.createElement('div');
+
     houseCard.className = 'col-12';
 
     const card = document.createElement('div');
+
     card.className = 'card';
 
     // Highlight the selected house
@@ -85,27 +118,32 @@ function displayHouses() {
     }
 
     const cardBody = document.createElement('div');
+
     cardBody.className =
       'card-body d-flex justify-content-between align-items-center gap-3';
 
-    // House information
+    // HOUSE INFORMATION
     const houseDetails = document.createElement('div');
 
     const houseTitle = document.createElement('h3');
+
     houseTitle.className = 'h5 fw-bold mb-2';
     houseTitle.textContent = house.name;
 
     const houseAddress = document.createElement('p');
+
     houseAddress.className = 'text-muted mb-2';
     houseAddress.textContent = house.address;
 
     // Count members in this house
-    const houseMembers = data.members.filter(function (member) {
+    const houseMembers = (data.members || []).filter(function (member) {
       return member.houseId === house.id;
     });
 
     const memberCount = document.createElement('small');
+
     memberCount.className = 'text-secondary';
+
     memberCount.textContent =
       houseMembers.length +
       (houseMembers.length === 1 ? ' member' : ' members');
@@ -114,9 +152,11 @@ function displayHouses() {
     houseDetails.appendChild(houseAddress);
     houseDetails.appendChild(memberCount);
 
-    // Select house button
+    // SELECT HOUSE BUTTON
     const selectButton = document.createElement('button');
+
     selectButton.type = 'button';
+
     selectButton.className =
       selectedHouseId === house.id
         ? 'btn btn-primary btn-sm'
@@ -127,9 +167,8 @@ function displayHouses() {
 
     selectButton.addEventListener('click', function () {
       selectedHouseId = house.id;
-      memberHouseInput.value = house.id;
 
-      deleteHouseButton.disabled = false;
+      memberHouseInput.value = house.id;
 
       displayHouseOptions();
       displayHouses();
@@ -145,7 +184,12 @@ function displayHouses() {
     housesList.appendChild(houseCard);
   });
 
+  // Enable delete only when a house is selected
   deleteHouseButton.disabled = selectedHouseId === null;
+
+  // Keep the dropdown in sync with the selected house
+  memberHouseInput.value =
+    selectedHouseId === null ? '' : selectedHouseId;
 }
 
 
@@ -157,7 +201,7 @@ function displayHouseOptions() {
     <option value="">Choose a house</option>
   `;
 
-  data.houses.forEach(function (house) {
+  (data.houses || []).forEach(function (house) {
     const option = document.createElement('option');
 
     option.value = house.id;
@@ -191,58 +235,70 @@ function displayMembers() {
   }
 
   // Find the selected house
-  const selectedHouse = data.houses.find(function (house) {
+  const selectedHouse = (data.houses || []).find(function (house) {
     return house.id === selectedHouseId;
   });
 
   if (!selectedHouse) {
     selectedHouseId = null;
+
+    displayHouseOptions();
+    displayHouses();
     displayMembers();
+
     return;
   }
 
   // Display the selected house name
   const heading = document.createElement('h3');
+
   heading.className = 'h5 fw-bold mb-3';
   heading.textContent = selectedHouse.name + ' — Members';
 
   membersList.appendChild(heading);
 
-  // Get only the members belonging to this house
-  const houseMembers = data.members.filter(function (member) {
+  // Get members belonging to this house
+  const houseMembers = (data.members || []).filter(function (member) {
     return member.houseId === selectedHouseId;
   });
 
-  // Check if the house has members
+  // Check whether the house has members
   if (houseMembers.length === 0) {
     const message = document.createElement('p');
+
     message.className = 'text-muted';
     message.textContent =
       'No members have been added to this house yet.';
 
     membersList.appendChild(message);
+
     return;
   }
 
   // Display each member
   houseMembers.forEach(function (member) {
     const memberCard = document.createElement('div');
+
     memberCard.className = 'card mb-2';
 
     const cardBody = document.createElement('div');
+
     cardBody.className =
       'card-body d-flex justify-content-between align-items-center gap-3';
 
     const memberName = document.createElement('p');
+
     memberName.className = 'fw-semibold mb-0';
     memberName.textContent = member.name;
 
-    // Edit and delete buttons
+    // EDIT AND DELETE BUTTONS
     const buttons = document.createElement('div');
+
     buttons.className = 'd-flex gap-2';
 
     // EDIT BUTTON
     const editButton = document.createElement('button');
+
     editButton.type = 'button';
     editButton.className = 'btn btn-outline-primary btn-sm';
     editButton.innerHTML = '<i class="fa-solid fa-pen-to-square"></i>';
@@ -255,6 +311,7 @@ function displayMembers() {
 
     // DELETE BUTTON
     const deleteButton = document.createElement('button');
+
     deleteButton.type = 'button';
     deleteButton.className = 'btn btn-outline-danger btn-sm';
     deleteButton.innerHTML = '<i class="fa-solid fa-trash"></i>';
@@ -272,6 +329,7 @@ function displayMembers() {
     cardBody.appendChild(buttons);
 
     memberCard.appendChild(cardBody);
+
     membersList.appendChild(memberCard);
   });
 }
@@ -285,27 +343,21 @@ createHouseForm.addEventListener('submit', function (event) {
   const houseAddress = houseAddressInput.value.trim();
 
   if (houseName === '' || houseAddress === '') {
-    showMessage(
-      formMessage,
-      'Please enter the house name and address.',
-      'text-danger'
-    );
+    showMessage('Please enter the house name and address.', 'error');
+
     return;
   }
 
   const data = getData();
 
   // Prevent duplicate house names
-  const houseExists = data.houses.some(function (house) {
+  const houseExists = (data.houses || []).some(function (house) {
     return house.name.toLowerCase() === houseName.toLowerCase();
   });
 
   if (houseExists) {
-    showMessage(
-      formMessage,
-      'A house with this name already exists.',
-      'text-danger'
-    );
+    showMessage('A house with this name already exists.', 'error');
+
     return;
   }
 
@@ -327,87 +379,122 @@ createHouseForm.addEventListener('submit', function (event) {
 
   createHouseForm.reset();
 
-  showMessage(
-    formMessage,
-    'House created successfully!',
-    'text-success'
-  );
-
   displayHouseOptions();
   displayHouses();
   displayMembers();
+
+  showMessage('House created successfully!', 'success');
 });
 
 
 // DELETE A HOUSE
 deleteHouseButton.addEventListener('click', function () {
   if (selectedHouseId === null) {
-    showMessage(
-      formMessage,
-      'Please select a house first.',
-      'text-danger'
-    );
+    showMessage('Please select a house first.', 'error');
+
     return;
   }
 
   const data = getData();
 
   // Prevent deleting houses that have expenses
-  const houseExpenses = data.expenses.filter(function (expense) {
-    return expense.houseId === selectedHouseId;
+  const houseExpenses = (data.expenses || []).filter(function (expense) {
+    return Number(expense.houseId) === Number(selectedHouseId);
   });
 
   if (houseExpenses.length > 0) {
     showMessage(
-      formMessage,
-      'This house has expense records. Please review them before deleting the house.',
-      'text-danger'
+      'This house has expense records. Review them before deleting the house.',
+      'error'
     );
+
     return;
   }
 
-  const answer = confirm(
-    'Are you sure you want to delete this house and its members?'
-  );
+  // Open the confirmation modal instead of using confirm()
+  deletingHouseId = selectedHouseId;
 
-  if (!answer) {
+  const confirmationTitle = document.getElementById('confirmationTitle');
+  const confirmationMessage = document.getElementById('confirmationMessage');
+  const confirmationButton = document.getElementById('confirmationButton');
+  const confirmationModalElement = document.getElementById('confirmationModal');
+
+  // If the optional confirmation modal is not in the HTML,
+  // delete the house immediately and notify the user.
+  if (
+    !confirmationModalElement ||
+    !confirmationTitle ||
+    !confirmationMessage ||
+    !confirmationButton
+  ) {
+    deleteHouse(deletingHouseId);
+
+    return;
+  }
+
+  confirmationTitle.textContent = 'Delete House';
+  confirmationMessage.textContent =
+    'Are you sure you want to delete this house and its members?';
+
+  confirmationButton.textContent = 'Delete House';
+  confirmationButton.className = 'btn btn-danger';
+
+  const confirmationModal =
+    bootstrap.Modal.getOrCreateInstance(confirmationModalElement);
+
+  confirmationModal.show();
+});
+
+
+// REMOVE A HOUSE
+function deleteHouse(houseId) {
+  const data = getData();
+
+  // Check for expenses again before deleting
+  const houseHasExpenses = (data.expenses || []).some(function (expense) {
+    return Number(expense.houseId) === Number(houseId);
+  });
+
+  if (houseHasExpenses) {
+    showMessage(
+      'This house has expense records. Review them before deleting the house.',
+      'error'
+    );
+
     return;
   }
 
   // Remove the house
-  data.houses = data.houses.filter(function (house) {
-    return house.id !== selectedHouseId;
+  data.houses = (data.houses || []).filter(function (house) {
+    return house.id !== houseId;
   });
 
   // Remove members belonging to this house
-  data.members = data.members.filter(function (member) {
-    return member.houseId !== selectedHouseId;
+  data.members = (data.members || []).filter(function (member) {
+    return member.houseId !== houseId;
   });
 
   // Remove settlements belonging to this house
-  data.settlements = data.settlements.filter(function (settlement) {
-    return settlement.houseId !== selectedHouseId;
+  data.settlements = (data.settlements || []).filter(function (settlement) {
+    return settlement.houseId !== houseId;
   });
 
   // Remove activities belonging to this house
-  data.activities = data.activities.filter(function (activity) {
-    return activity.houseId !== selectedHouseId;
+  data.activities = (data.activities || []).filter(function (activity) {
+    return activity.houseId !== houseId;
   });
 
   saveData(data);
 
   selectedHouseId = null;
-
-  showMessage(
-    formMessage,
-    'House deleted successfully.',
-    'text-success'
-  );
+  deletingHouseId = null;
 
   displayHouseOptions();
   displayHouses();
   displayMembers();
-});
+
+  showMessage('House deleted successfully.', 'success');
+}
 
 
 // ADD A MEMBER
@@ -419,43 +506,40 @@ addMemberForm.addEventListener('submit', function (event) {
 
   if (memberHouseInput.value === '' || memberName === '') {
     showMessage(
-      memberMessage,
       "Please select a house and enter the member's name.",
-      'text-danger'
+      'error'
     );
+
     return;
   }
 
   const data = getData();
 
   // Check that the selected house exists
-  const selectedHouse = data.houses.find(function (house) {
-    return house.id === houseId;
+  const selectedHouse = (data.houses || []).find(function (house) {
+    return Number(house.id) === houseId;
   });
 
   if (!selectedHouse) {
-    showMessage(
-      memberMessage,
-      'Please select a valid house.',
-      'text-danger'
-    );
+    showMessage('Please select a valid house.', 'error');
+
     return;
   }
 
   // Prevent duplicate member names in the same house
-  const memberExists = data.members.some(function (member) {
+  const memberExists = (data.members || []).some(function (member) {
     return (
-      member.houseId === houseId &&
+      Number(member.houseId) === houseId &&
       member.name.toLowerCase() === memberName.toLowerCase()
     );
   });
 
   if (memberExists) {
     showMessage(
-      memberMessage,
       'This member already exists in the selected house.',
-      'text-danger'
+      'error'
     );
+
     return;
   }
 
@@ -483,15 +567,11 @@ addMemberForm.addEventListener('submit', function (event) {
 
   addMemberForm.reset();
 
-  showMessage(
-    memberMessage,
-    'Member added successfully!',
-    'text-success'
-  );
-
   displayHouseOptions();
   displayHouses();
   displayMembers();
+
+  showMessage('Member added successfully!', 'success');
 });
 
 
@@ -503,137 +583,252 @@ memberHouseInput.addEventListener('change', function () {
     selectedHouseId = Number(memberHouseInput.value);
   }
 
-  deleteHouseButton.disabled = selectedHouseId === null;
-
   displayHouses();
   displayMembers();
 });
 
 
-// EDIT A MEMBER
+// OPEN THE EDIT MEMBER MODAL
 function editMember(memberId) {
   const data = getData();
 
-  const member = data.members.find(function (item) {
-    return item.id === memberId;
+  const member = (data.members || []).find(function (item) {
+    return Number(item.id) === Number(memberId);
   });
 
   if (!member) {
+    showMessage('Member not found.', 'error');
+
     return;
   }
 
-  const newName = prompt(
-    "Enter the member's new name:",
-    member.name
-  );
+  editingMemberId = memberId;
 
-  if (newName === null) {
+  editMemberNameInput.value = member.name;
+  editMemberMessage.textContent = '';
+
+  editMemberModal.show();
+}
+
+
+// SAVE MEMBER EDITS
+editMemberForm.addEventListener('submit', function (event) {
+  event.preventDefault();
+
+  const newName = editMemberNameInput.value.trim();
+
+  if (newName === '') {
+    editMemberMessage.textContent = 'Please enter a member name.';
+
     return;
   }
 
-  const cleanedName = newName.trim();
+  const data = getData();
 
-  if (cleanedName === '') {
-    alert('The member name cannot be empty.');
+  const member = (data.members || []).find(function (item) {
+    return Number(item.id) === Number(editingMemberId);
+  });
+
+  if (!member) {
+    editMemberMessage.textContent = 'Member not found.';
+
     return;
   }
 
   // Prevent duplicate names in the same house
-  const duplicateName = data.members.some(function (item) {
+  const duplicateName = (data.members || []).some(function (item) {
     return (
-      item.id !== memberId &&
-      item.houseId === member.houseId &&
-      item.name.toLowerCase() === cleanedName.toLowerCase()
+      Number(item.id) !== Number(editingMemberId) &&
+      Number(item.houseId) === Number(member.houseId) &&
+      item.name.toLowerCase() === newName.toLowerCase()
     );
   });
 
   if (duplicateName) {
-    alert('Another member in this house already has that name.');
+    editMemberMessage.textContent =
+      'Another member in this house already has that name.';
+
     return;
   }
 
-  member.name = cleanedName;
+  // Update the member name
+  member.name = newName;
 
   saveData(data);
 
-  showMessage(
-    memberMessage,
-    'Member name updated successfully.',
-    'text-success'
-  );
+  editMemberModal.hide();
 
   displayHouses();
   displayMembers();
-}
+
+  showMessage('Member name updated successfully!', 'success');
+
+  editingMemberId = null;
+});
 
 
 // DELETE A MEMBER
 function deleteMember(memberId) {
   const data = getData();
 
-  const member = data.members.find(function (item) {
-    return item.id === memberId;
+  const member = (data.members || []).find(function (item) {
+    return Number(item.id) === Number(memberId);
   });
 
   if (!member) {
+    showMessage('Member not found.', 'error');
+
     return;
   }
 
   // Check whether the member appears in expense records
-  const memberHasExpenses = data.expenses.some(function (expense) {
+  const memberHasExpenses = (data.expenses || []).some(function (expense) {
     const participants = expense.participants || [];
 
     return (
-      Number(expense.paidBy) === memberId ||
-      Number(expense.payerId) === memberId ||
+      Number(expense.paidBy) === Number(memberId) ||
+      Number(expense.payerId) === Number(memberId) ||
       participants.some(function (participant) {
         if (typeof participant === 'object' && participant !== null) {
-          return Number(participant.memberId) === memberId;
+          return Number(participant.memberId) === Number(memberId);
         }
 
-        return Number(participant) === memberId;
+        return Number(participant) === Number(memberId);
       })
     );
   });
 
-  // Keep members who appear in existing expense records
+  // Keep members who appear in expense records
   if (memberHasExpenses) {
-    alert(
-      'This member appears in expense records. Review their expenses and outstanding balance before deleting them.'
+    showMessage(
+      'This member appears in expense records. Review their expenses and outstanding balance before deleting them.',
+      'error'
     );
+
     return;
   }
 
-  const answer = confirm(
-    'Are you sure you want to delete ' + member.name + '?'
-  );
+  // Open the optional confirmation modal
+  deletingMemberId = memberId;
 
-  if (!answer) {
+  const confirmationTitle = document.getElementById('confirmationTitle');
+  const confirmationMessage = document.getElementById('confirmationMessage');
+  const confirmationButton = document.getElementById('confirmationButton');
+  const confirmationModalElement = document.getElementById('confirmationModal');
+
+  // If the confirmation modal is not in the HTML, delete immediately
+  if (
+    !confirmationModalElement ||
+    !confirmationTitle ||
+    !confirmationMessage ||
+    !confirmationButton
+  ) {
+    removeMember(deletingMemberId);
+
+    return;
+  }
+
+  confirmationTitle.textContent = 'Delete Member';
+  confirmationMessage.textContent =
+    'Are you sure you want to delete ' + member.name + '?';
+
+  confirmationButton.textContent = 'Delete Member';
+  confirmationButton.className = 'btn btn-danger';
+
+  const confirmationModal =
+    bootstrap.Modal.getOrCreateInstance(confirmationModalElement);
+
+  confirmationModal.show();
+}
+
+
+// REMOVE A MEMBER
+function removeMember(memberId) {
+  const data = getData();
+
+  // Check the member again
+  const member = (data.members || []).find(function (item) {
+    return Number(item.id) === Number(memberId);
+  });
+
+  if (!member) {
+    showMessage('Member not found.', 'error');
+
+    return;
+  }
+
+  // Check whether the member has any expense records
+  const memberHasExpenses = (data.expenses || []).some(function (expense) {
+    const participants = expense.participants || [];
+
+    return (
+      Number(expense.paidBy) === Number(memberId) ||
+      Number(expense.payerId) === Number(memberId) ||
+      participants.some(function (participant) {
+        if (typeof participant === 'object' && participant !== null) {
+          return Number(participant.memberId) === Number(memberId);
+        }
+
+        return Number(participant) === Number(memberId);
+      })
+    );
+  });
+
+  if (memberHasExpenses) {
+    showMessage(
+      'This member appears in expense records. Review them before deleting the member.',
+      'error'
+    );
+
     return;
   }
 
   // Remove the member
   data.members = data.members.filter(function (item) {
-    return item.id !== memberId;
+    return Number(item.id) !== Number(memberId);
   });
 
   // Remove the member ID from each house
-  data.houses.forEach(function (house) {
+  (data.houses || []).forEach(function (house) {
     house.memberIds = (house.memberIds || []).filter(function (id) {
-      return id !== memberId;
+      return Number(id) !== Number(memberId);
     });
   });
 
   saveData(data);
 
-  showMessage(
-    memberMessage,
-    'Member deleted successfully.',
-    'text-success'
-  );
+  deletingMemberId = null;
 
   displayHouses();
   displayMembers();
+
+  showMessage('Member deleted successfully.', 'success');
+}
+
+
+// HANDLE THE OPTIONAL CONFIRMATION MODAL
+const confirmationButton = document.getElementById('confirmationButton');
+const confirmationModalElement = document.getElementById('confirmationModal');
+
+if (confirmationButton && confirmationModalElement) {
+  confirmationButton.addEventListener('click', function () {
+    const confirmationModal =
+      bootstrap.Modal.getOrCreateInstance(confirmationModalElement);
+
+    confirmationModal.hide();
+
+    if (deletingHouseId !== null) {
+      deleteHouse(deletingHouseId);
+    } else if (deletingMemberId !== null) {
+      removeMember(deletingMemberId);
+    }
+  });
+
+  // Clear pending actions if the user closes the confirmation modal
+  confirmationModalElement.addEventListener('hidden.bs.modal', function () {
+    deletingHouseId = null;
+    deletingMemberId = null;
+  });
 }
 
 
@@ -650,6 +845,8 @@ async function startPage() {
 
     housesList.textContent =
       'Unable to load your houses. Please refresh the page.';
+
+    showMessage('Unable to load your houses. Please refresh the page.', 'error');
   }
 }
 
