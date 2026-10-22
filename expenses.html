@@ -4,79 +4,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Expense | House Bills Splitter</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="expenses.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
-  <aside class="sidebar">
-    <a href="./index.html" class="brand">
-      <i class="fa-solid fa-house-user"></i>
-      <span>House Bills Splitter</span>
-    </a>
-
-    <p class="sidebar-label">MENU</p>
-    <nav class="sidebar-nav" aria-label="Main navigation">
-      <a href="./index.html" class="nav-link">
-        <i class="fa-solid fa-chart-pie"></i><span>Dashboard</span>
-      </a>
-      <a href="./house-member.html" class="nav-link">
-        <i class="fa-solid fa-people-roof"></i><span>Houses &amp; Members</span>
-      </a>
-      <a href="./expenses.html" class="nav-link active">
-        <i class="fa-solid fa-receipt"></i><span>Expenses</span>
-      </a>
-      <a href="./balances.html" class="nav-link">
-        <i class="fa-solid fa-scale-balanced"></i><span>Balances</span>
-      </a>
-      <a href="./settlements.html" class="nav-link">
-        <i class="fa-solid fa-money-bill-transfer"></i><span>Settlements</span>
-      </a>
-      <a href="./activity.html" class="nav-link">
-        <i class="fa-solid fa-clock-rotate-left"></i><span>Activity History</span>
-      </a>
-    </nav>
-
-    <div class="sidebar-footer">
-      <i class="fa-solid fa-circle-info"></i>
-      <span>Manage shared expenses with ease.</span>
-    </div>
-  </aside>
+  <div class="app-layout">
+    <div id="sidebar-container"></div>
 
   <main class="main-content">
-    <nav class="topbar" aria-label="Dashboard tools">
-      <div class="search-box">
-        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-        <input type="search" id="dashboardSearch" placeholder="Search expenses, housemates..." aria-label="Search expenses and housemates">
-      </div>
-      <div class="topbar-actions">
-        <button type="button" class="icon-button" aria-label="Notifications">
-          <i class="fa-regular fa-bell"></i>
-        </button>
-        <a href="./expenses.html" class="expense-button">
-          <i class="fa-solid fa-plus"></i><span>Add Expense</span>
-        </a>
-      </div>
-    </nav>
-
     <section class="expenses-page">
       <div class="expense-topbar">
         <nav class="breadcrumbs" aria-label="Breadcrumb">
-          <a href="./house-member.html">Houses &amp; Members</a>
+          <a href="house-member.html">Houses &amp; Members</a>
           <span>›</span><span class="current-page">Add Expense</span>
         </nav>
         <div class="currency-status">
-          <span class="status-dot"></span><span>Currency: NGN (₦)</span>
+          <span class="status-dot"></span><span>House currency: NGN (₦)</span>
           <span class="status-divider"></span><span class="ledger-status">Shared expenses</span>
         </div>
       </div>
 
       <header class="expense-page-header">
         <div>
-          <h1>Add an Expense</h1>
+          <h1 id="pageTitle">Add an Expense</h1>
           <p>Record a bill and share the cost with your housemates.</p>
         </div>
       </header>
+
+      <div id="recurringReminder"></div>
 
       <form id="expenseForm">
         <div class="expense-layout">
@@ -84,7 +40,7 @@
             <section class="expense-card expense-details-card">
               <div class="card-heading">
                 <h2><span class="heading-icon"><i class="fa-solid fa-receipt"></i></span> Expense Details</h2>
-                <span class="step-badge">Step 1 of 2</span>
+                
               </div>
 
               <div class="form-field">
@@ -102,12 +58,24 @@
 
               <div class="amount-currency-grid">
                 <div class="form-field">
-                  <label for="expenseAmount">Amount (₦) <span>Required</span></label>
+                  <label for="expenseAmount">Amount <span>Required</span></label>
                   <div class="amount-input-wrap">
-                    <span>₦</span>
+                    <span id="currencyPrefix">₦</span>
                     <input class="form-control expense-input" type="number" id="expenseAmount" name="amount" min="0.01" step="0.01" placeholder="18500" required>
                   </div>
                 </div>
+                <div class="form-field">
+                  <label for="expenseCurrency">Currency</label>
+                  <select class="form-select expense-input" id="expenseCurrency" name="currency"></select>
+                </div>
+              </div>
+
+              <div id="rateBox" class="rate-box" hidden>
+                <p id="rateStatus" class="rate-status" role="status" aria-live="polite"></p>
+                <small class="field-help">Rates By <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">Exchange Rate API</a></small>
+              </div>
+
+              <div class="date-payer-grid">
                 <div class="form-field">
                   <label for="expenseCategory">Category <span>Required</span></label>
                   <select class="form-select expense-input" id="expenseCategory" name="category" required>
@@ -120,18 +88,26 @@
                     <option value="Other">Other</option>
                   </select>
                 </div>
-              </div>
-
-              <div class="date-payer-grid">
                 <div class="form-field">
                   <label for="expenseDate">Date <span>Required</span></label>
                   <input class="form-control expense-input" type="date" id="expenseDate" name="date" required>
                 </div>
+              </div>
+
+              <div class="date-payer-grid">
                 <div class="form-field">
                   <label for="expensePayer">Paid by <span>Required</span></label>
                   <select class="form-select expense-input" id="expensePayer" name="paidBy" required disabled>
                     <option value="">Select a house first</option>
                   </select>
+                </div>
+                <div class="form-field">
+                  <label for="expenseRecurring">Repeat</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="expenseRecurring">
+                    <label class="form-check-label" for="expenseRecurring">Repeats every month</label>
+                  </div>
+                  <small class="field-help">e.g. rent or internet. You'll be reminded each new month.</small>
                 </div>
               </div>
             </section>
@@ -208,13 +184,21 @@
           <p id="formMessage" class="form-message" role="status" aria-live="polite"></p>
           <div>
             <button class="btn-cancel" type="reset">Clear form</button>
-            <button class="btn-save" type="submit"><i class="fa-solid fa-check"></i> Save expense</button>
+            <button class="btn-cancel" type="button" id="cancelEditButton" hidden>Cancel edit</button>
+            <button class="btn-save" type="submit" id="saveButton"><i class="fa-solid fa-check"></i> <span id="saveButtonText">Save expense</span></button>
           </div>
         </div>
       </form>
+
+      <section class="expense-card mt-4">
+        <div class="card-heading"><h2>Expenses in this house</h2></div>
+        <div id="expenseList"></div>
+      </section>
     </section>
   </main>
+  </div>
 
-  <script type="module" src="./js/expenses.js"></script>
+<script src="script.js"></script>
+  <div id="appToastContainer" class="toast-container position-fixed top-0 end-0 p-3" style="z-index:2000" aria-live="polite" aria-atomic="true"></div>
 </body>
 </html>

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | House Bills Splitter</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-layout">
+    <div id="sidebar-container"></div>
+
+    <main class="main-content">
+      <section class="page-heading">
+        <div>
+          <p class="eyebrow">YOUR HOUSEHOLD OVERVIEW</p>
+          <h1 id="greeting">Welcome!</h1>
+          <p class="hero-description">Here's what's happening with your household finances.</p>
+        </div>
+        <a href="expenses.html" class="expense-button">
+          <i class="fa-solid fa-plus"></i><span>Add Expense</span>
+        </a>
+      </section>
+
+      <div class="house-picker">
+        <label for="houseSelect" class="form-label mb-0">House:</label>
+        <select id="houseSelect" class="form-select"></select>
+      </div>
+
+      <div id="recurringReminder"></div>
+
+      <section class="summary-grid" aria-label="Household summary">
+        <article class="summary-card">
+          <div class="card-heading">
+            <p class="card-label">SPENT THIS MONTH</p>
+            <span class="card-icon spending-icon"><i class="fa-solid fa-people-roof" aria-hidden="true"></i></span>
+          </div>
+          <p class="card-amount" id="totalSpending">₦0.00</p>
+          <p class="card-note" id="monthLabel">This month</p>
+        </article>
+
+        <article class="summary-card">
+          <div class="card-heading">
+            <p class="card-label">BIGGEST EXPENSE</p>
+            <span class="card-icon owe-icon"><i class="fa-solid fa-arrow-up-right-dots" aria-hidden="true"></i></span>
+          </div>
+          <p class="card-amount" id="biggestAmount">₦0.00</p>
+          <p class="card-note" id="biggestTitle">Nothing yet this month</p>
+        </article>
+
+        <article class="summary-card">
+          <div class="card-heading">
+            <p class="card-label">STILL TO SETTLE</p>
+            <span class="card-icon receivable-icon"><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i></span>
+          </div>
+          <p class="card-amount" id="outstanding">₦0.00</p>
+          <p class="card-note">Owed to housemates (all time)</p>
+        </article>
+
+        <article class="summary-card">
+          <div class="card-heading">
+            <p class="card-label">EXPENSES THIS MONTH</p>
+            <span class="card-icon balance-icon"><i class="fa-solid fa-receipt" aria-hidden="true"></i></span>
+          </div>
+          <p class="card-amount" id="expenseCount">0</p>
+          <p class="card-note">Bills recorded</p>
+        </article>
+      </section>
+
+      <section class="dashboard-grid">
+        <div class="simple-card">
+          <h2 class="section-title">Spending by category</h2>
+          <div class="chart-box">
+            <canvas id="categoryChart"></canvas>
+            <p id="categoryEmpty" class="empty-state" ></p>
+          </div>
+        </div>
+
+        <div class="simple-card">
+          <h2 class="section-title">Paid vs. share, per member</h2>
+          <div class="chart-box">
+            <canvas id="memberChart"></canvas>
+            <p id="memberEmpty" class="empty-state" ></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="dashboard-bottom-grid">
+        <div class="simple-card">
+          <h2 class="section-title">Quick start</h2>
+          <p class="text-secondary">Manage the bills you share with your housemates.</p>
+          <div class="quick-start-links">
+            <a class="btn btn-primary" href="house-member.html"><i class="fa-solid fa-house me-2"></i>Create a house</a>
+            <a class="btn btn-outline-primary" href="expenses.html"><i class="fa-solid fa-plus me-2"></i>Add an expense</a>
+            <a class="btn btn-outline-primary" href="settlements.html"><i class="fa-solid fa-money-bill-transfer me-2"></i>Settle up</a>
+          </div>
+        </div>
+        <div class="simple-card">
+          <div class="section-heading simple-section-heading">
+            <h2 class="section-title">Recent expenses</h2>
+            <a href="expenses.html" class="small">View all</a>
+          </div>
+          <div id="recentExpenses"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<div id="appToastContainer" class="toast-container position-fixed top-0 end-0 p-3" style="z-index:2000" aria-live="polite" aria-atomic="true"></div>
+  <script src="script.js"></script>
+</body>
+</html>
