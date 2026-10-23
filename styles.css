@@ -27,7 +27,7 @@
 
   --card-radius: 14px;
 
-  /* These were used in expenses.css but never defined */
+
   --soft-lavender-color: #f2f3ff;
   --light-lavender-color: #eaedff;
   --pale-blue-color: #dae2fd;
@@ -300,6 +300,11 @@ input {
 .summary-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 7px 18px rgb(19 27 46 / 7%);
+}
+#summaryTotal,
+#summaryMembers,
+#summaryShare{
+  padding-left:10px;
 }
 
 .card-heading {
