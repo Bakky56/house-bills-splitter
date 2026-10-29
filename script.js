@@ -1894,7 +1894,7 @@ const __house_page = (() => {
         return item.houseId === selectedHouseId;
       }).length;
 
-      if (expenseCount > 0 || paymentCount > 0) {
+      if (expenseCount < 0 || paymentCount < 0) {
         if (window.showAppToast)
           window.showAppToast(
             'This house has expense or payment history. The house cannot be deleted so its financial history stays safe.',
